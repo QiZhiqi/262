@@ -16,7 +16,7 @@ Aggdat$mean <- (Aggdat$tmin+Aggdat$tmax)/2
 
 boxplot(Aggdat$mean~Aggdat$month,
   ylab="Average Temperature from 1942 to 2016",
-  xlab="month", col="orange")
+  xlab="Month", col="orange")
 
 # Monthly Precipitation Boxplot 
 clim2 <- clim[,2:7]
@@ -24,7 +24,7 @@ Agg2 <- aggregate(clim2, by=list(clim2$month,clim2$year), FUN="sum")
 
 boxplot(Agg2$rain~Aggdat$month,
   ylab="Precipitation from 1942 to 2016",
-  xlab="month", col="blue")
+  xlab="Month", col="blue")
 
 # Aggregate precipitation by year
 Agg3<- aggregate(clim2, by=list(clim2$year), FUN="sum")
@@ -108,6 +108,8 @@ ggplot(Relation, aes(Temperature, Precipitation))+
   theme(text=element_text(family="Times", size=14),panel.grid.major=element_blank(),panel.grid.minor=element_blank(), axis.title.x=element_text(size=12), axis.title.y=element_text(size=12))+
    theme(legend.position=c(0.1,0.7),legend.box=NULL, legend.key=element_blank(), legend.text=element_text(size=9), legend.title=element_blank())
 
+#Figure Comment 
+#Graph shows that there is not too obvious relation between winter precipitation and summer temperature. However, we still can notice that some of low summer temperature leads to high precipitation in winter, whihle more high temperature contributes to low precipitation. Better understand this relationship between summer temperature and winter precipitation can help scientist forecast climte and response to the unexpected climate change.
 
 
 
