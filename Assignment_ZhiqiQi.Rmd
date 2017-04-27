@@ -114,3 +114,5 @@ ggplot(Relation, aes(Temperature, Precipitation))+
 
 
 ```
+#Figure Comment 
+**#Graph shows that there is not too obvious relation between winter precipitation and summer temperature. However, we still can notice that some of low summer temperature leads to high precipitation in winter, whihle more high temperature contributes to low precipitation. Better understand this relationship between summer temperature and winter precipitation can help scientist forecast climte and response to the unexpected climate change.**
