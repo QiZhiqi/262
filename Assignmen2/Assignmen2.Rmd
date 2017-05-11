@@ -61,6 +61,8 @@ Center<-group_by(California, County)
 CenterLat<-summarise(Center,MeanLat=mean(Latitude,na.rm=TRUE))
 CenterLong<-summarise(Center,MeanLong=mean(Longitude,na.rm=TRUE))
 Centerpoint<-left_join(CenterLat,CenterLong,by="County")
+Centerpoint1<-Centerpoint[2:59,]
+Centerpoint1
 
 ```
 
@@ -90,3 +92,8 @@ colnames(Fraction)[2]<-"Natural"
 colnames(Fraction)[3]<-"Man-made"
 Fraction$FractionNatural<-Fraction$Natural/(Fraction$Natural+Fraction$`Man-made`)
 Fraction$FractionManmade<-Fraction$`Man-made`/(Fraction$Natural+Fraction$`Man-made`)
+Fraction1<-Fraction[2:59,]
+Fraction1
+
+
+
