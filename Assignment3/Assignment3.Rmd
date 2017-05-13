@@ -1,0 +1,93 @@
+---
+title: "Assignment3"
+author: "Zhiqi Qi"
+date: "2017年5月13日"
+output: html_document
+---
+
+```{r setup, echo=FALSE, message=FALSE}
+#read in data
+thinshallow = read.table("C:/Users/qzq/Desktop/ESM262/Assignment/Assignment3/resthin.shallow.txt", header=T)
+thindeep = read.table("C:/Users/qzq/Desktop/ESM262/Assignment/Assignment3/resthin.deep.txt", header=T)
+clim=read.table("C:/Users/qzq/Desktop/ESM262/Assignment/Assignment3/sierraclim.txt",header=T)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(gridExtra)
+library(lubridate)
+
+```
+
+
+
+#Climate Change
+```{r clim,, eval=TRUE, echo=TRUE, warning=FALSE}
+#Temperature Change
+c =ggplot(clim, aes(y=tmax, x=as.factor(month)))+geom_boxplot(col="rosybrown2", fill="red3")
+c = c + labs(y= expression(paste("Maximum Temperature ",C**degree)), x="Month") 
+c= c+theme(axis.text= element_text(face="bold", colour="red4", size=14), 
+           axis.title=element_text(face="bold", size=14))
+c = c+  ggtitle("Monthly Temperature in Sierras")
+
+
+#Rainfall Change
+r=ggplot(clim, aes(x=as.factor(month), y=rain))+geom_jitter(col="steelblue")
+r = r + labs(y= "Mean Rainfall (mm)", x="Month") 
+r= r + theme(axis.text= element_text(face="bold", colour="skyblue", size=14), 
+           axis.title=element_text(face="bold", size=14))
+r = r +  ggtitle("Monthly Rainfall in Sierras")
+
+#Combine
+grid.arrange(c,r)
+```
+
+
+
+#Research on driest month 
+```{r driestmonth, eval=TRUE, echo=TRUE, warning=FALSE}
+#Climate in July
+clim7<-subset(clim, clim$month=="7")
+scl = 3000/15
+
+p = ggplot(clim7) + geom_bar(aes(x=year,y=rain*100), stat="summary", fun.y="sum",  fill="skyblue2") + 
+  geom_line(aes(x=year, y=tmax*scl), stat="summary", fun.y="mean", col="red4") 
+p=p+ scale_y_continuous(sec.axis = sec_axis(~./scl, name=expression(paste("Maximum Temperature ",C**degree)))) + 
+  labs(x="Year", y="Rainfall (0.01mm/yr)")
+p = p+ annotate("text", x=1990, y=500, label="July Precip", colour="blue", size=6, hjust=0.5)
+p = p+ annotate("text", x=1940, y=4500, label="July Temperature", colour="red", size=6, hjust=0)
+p
+```
+
+
+
+#Temperature
+```{r temperature, , eval=TRUE, echo=TRUE, warning=FALSE}
+#Monthly Temperature
+clim$MeanT <- (clim$tmin+clim$tmax)/2
+
+t = ggplot(clim) + geom_line(aes(x=year, y=tmin), stat="summary", fun.y="mean", col="rosybrown2") + geom_line(aes(x=year, y=MeanT), stat="summary", fun.y="mean", col="red")+ geom_line(aes(x=year, y=tmax), stat="summary", fun.y="mean", col="red4")
+t= t+facet_wrap(~as.factor(month))
+t = t + labs(y= expression(paste("Maximum Temperature ",C**degree)), x="Year") 
+t = t+  ggtitle("Monthly Temperature in Sierras")
+t
+```
+
+
+#Rainfall
+```{r rain, eval=TRUE, echo=TRUE, warning=FALSE}
+#Rainfall Density
+f1 = ggplot(subset(clim, clim$rain > 0), aes(x=rain))+geom_density(fill="blue")
+f1 = f1 + labs(y= "Density", x="Rainfall (mm)") 
+f1= f1 + theme(axis.text= element_text(family = "Times", size=14), 
+           axis.title=element_text(family = "Times", size=14))
+f1 = f1 +  ggtitle("Density of Rainfall in Sierras")
+f1
+
+#Monthly Rainfall
+f = ggplot(clim) + geom_bar(aes(x=year,y=rain), stat="summary", fun.y="sum",  fill="steelblue2")
+f= f+facet_wrap(~as.factor(month))
+f = f + labs(y= "Rainfall(mm)", x="Year") 
+f = f+  ggtitle("Monthly Rainfall in Sierras")
+f
+
+```
